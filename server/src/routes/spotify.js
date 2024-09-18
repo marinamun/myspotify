@@ -1,0 +1,81 @@
+// server/src/routes/spotify.js
+const express = require("express");
+const axios = require("axios");
+const router = express.Router();
+require("dotenv").config();
+
+//GOAL: CREATE AND MANAGE A USER TOKEN TO FREELY BROWSE MUSIC WITHOUT A SPOTIFY ACCOUNT
+// Function to fetch access token 
+let accessToken = "";
+let tokenExpiresAt = 0;
+
+async function fetchAccessToken() {
+  try {
+    const response = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      new URLSearchParams({
+        grant_type: "client_credentials",
+        client_id: process.env.SPOTIFY_CLIENT_ID,
+        client_secret: process.env.SPOTIFY_CLIENT_SECRET,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    accessToken = response.data.access_token;
+    tokenExpiresAt = Date.now() + response.data.expires_in * 1000;
+    console.log("Spotify access token fetched");
+  } catch (error) {
+    console.error("Error fetching access token:", error);
+  }
+}
+
+// Middleware to ensure valid token
+async function ensureValidToken(req, res, next) {
+  if (!accessToken || Date.now() >= tokenExpiresAt) {
+    await fetchAccessToken();
+  }
+  next();
+}
+
+// Search Spotify API
+router.get("/search", ensureValidToken, async (req, res) => {
+  console.log("💚➡️➡️Received request:", req.method, req.originalUrl);
+
+  console.log("➡️➡️➡️Received query parameters:", req.query); // Log query parameters
+
+  const { query } = req.query;
+  if (!query) {
+    console.error("Query parameter is missing");
+    return res.status(400).json({ error: "Query parameter is required" }); // Send JSON error response
+  }
+
+  try {
+    const response = await axios.get("https://api.spotify.com/v1/search", {
+      params: {
+        q: query,
+        type: "track",
+        limit: 10,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    console.log("🍁🍁🍁🍁Spotify API response:", response.data); // Log response from Spotify API
+    res.json(response.data); // Send JSON response
+  } catch (error) {
+    console.error("Error fetching data from Spotify API:", error);
+    res.status(500).json({ error: "Internal Server Error" }); // Send JSON error response
+  }
+});
+
+
+///test
+router.get("/test-proxy", (req, res) => {
+  res.json({ message: "Proxy is working" });
+});
+
+module.exports = router;
