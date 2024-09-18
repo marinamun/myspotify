@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,6 +52,32 @@ const Homepage = () => {
         />
       </label>
       <button onClick={handleSearch}>Search</button>
+
+      <h2>Results of your search:</h2>
+
+      <ul>
+        {tracks.map((track) => (
+          <li key={track.id}>
+            <Link to={`/song/${track.id}`}>
+              <p>
+                <strong>{track.name}</strong> by{" "}
+                <i>{track.artists.map((artist) => artist.name).join(", ")}</i>
+              </p>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      {/*   <ul>
+        {tracks.map((track) => (
+          <li key={track.id}>
+            <Link to={`/song/${track.id}`}>
+              {track.name} -{" "}
+              {track.artists.map((artist) => artist.name).join(", ")}
+            </Link>
+          </li>
+        ))}
+      </ul> */}
     </>
   );
 };

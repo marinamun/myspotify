@@ -4,6 +4,7 @@ import Homepage from "./pages/Homepage";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import SongDetails from "./pages/SongDetails";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/song/:id" element={<SongDetails />} />
       </Routes>
     </Router>
   );
