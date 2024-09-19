@@ -67,17 +67,6 @@ const Homepage = () => {
           </li>
         ))}
       </ul>
-
-      {/*   <ul>
-        {tracks.map((track) => (
-          <li key={track.id}>
-            <Link to={`/song/${track.id}`}>
-              {track.name} -{" "}
-              {track.artists.map((artist) => artist.name).join(", ")}
-            </Link>
-          </li>
-        ))}
-      </ul> */}
     </>
   );
 };
