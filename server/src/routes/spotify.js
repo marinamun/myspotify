@@ -5,7 +5,7 @@ const router = express.Router();
 require("dotenv").config();
 
 //GOAL: CREATE AND MANAGE A USER TOKEN TO FREELY BROWSE MUSIC WITHOUT A SPOTIFY ACCOUNT
-// Function to fetch access token 
+// Function to fetch access token
 let accessToken = "";
 let tokenExpiresAt = 0;
 
@@ -72,10 +72,37 @@ router.get("/search", ensureValidToken, async (req, res) => {
   }
 });
 
+///Fetch all the info of a song to display in SongDetails.jsx
+router.get("/song/:id", ensureValidToken, async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ error: "Track ID is required" });
+  }
 
-///test
-router.get("/test-proxy", (req, res) => {
-  res.json({ message: "Proxy is working" });
+  try {
+    const response = await axios.get(
+      `https://api.spotify.com/v1/tracks/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    //the json from api contains the following details, including the listen preview
+    const trackData = response.data;
+
+    res.json({
+      name: trackData.name,
+      artists: trackData.artists,
+      album: trackData.album,
+      release_date: trackData.album.release_date,
+      preview_url: trackData.preview_url,
+      uri: trackData.uri, // Spotify URI (if needed for future use)
+    });
+  } catch (error) {
+    console.error("Error fetching track details:", error);
+    res.status(500).json({ error: "Failed to fetch track details" });
+  }
 });
 
 module.exports = router;

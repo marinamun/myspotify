@@ -55,12 +55,21 @@ const SongDetails = () => {
           <h2>{track.name}</h2>
           <p>Artist: {track.artists.map((artist) => artist.name).join(", ")}</p>
           <p>Album: {track.album.name}</p>
-          <p>Release Date: {track.album.release_date}</p>
+          <p>Release Date: {track.release_date}</p>
           <img src={track.album.images[0]?.url} alt={track.name} width="300" />
-          {albumImage && (
-            <img src={albumImage} alt={track.name} width="300" />
-          )}{" "}
-          {/* Display image */}
+
+          {/* Check if preview_url is available */}
+          {track.preview_url ? (
+            <div>
+              <p>Listen to a preview:</p>
+              <audio controls>
+                <source src={track.preview_url} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          ) : (
+            <p>No preview available for this track.</p>
+          )}
         </div>
       )}
     </>

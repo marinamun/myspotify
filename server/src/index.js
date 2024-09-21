@@ -13,7 +13,7 @@ app.use(cors());
 
 // Basic route
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Backend is running!🔥");
 });
 
 // Start server
