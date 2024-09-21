@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,6 +18,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize and export Firebase Authentication so you can use it in sign up page
+// Initialize Firebase for authentication
 const auth = getAuth(app);
-export { auth };
+
+// Initialize Firestore
+const db = getFirestore(app);
+
+//Export auth for authentication purpose in sign up and login. Export db to use firestore db
+export { auth, db };

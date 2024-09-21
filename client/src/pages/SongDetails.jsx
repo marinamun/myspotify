@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { db } from "../firebaseConfig";
+
 
 const SongDetails = () => {
   const { id } = useParams(); // Get track ID from URL
@@ -47,6 +49,9 @@ const SongDetails = () => {
     track.album.images.find((image) => image.width === 300)?.url ||
     track.album.images[0]?.url;
 
+  const handleFavorite = async () => {
+    console.log("hi from handlefavvv");
+  };
   return (
     <>
       <h1>Song Details</h1>
@@ -70,6 +75,7 @@ const SongDetails = () => {
           ) : (
             <p>No preview available for this track.</p>
           )}
+          <button onClick={handleFavorite}>❤️ Add to Favorites</button>
         </div>
       )}
     </>

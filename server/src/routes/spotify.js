@@ -97,7 +97,7 @@ router.get("/song/:id", ensureValidToken, async (req, res) => {
       album: trackData.album,
       release_date: trackData.album.release_date,
       preview_url: trackData.preview_url,
-      uri: trackData.uri, // Spotify URI (if needed for future use)
+      uri: trackData.uri, 
     });
   } catch (error) {
     console.error("Error fetching track details:", error);
