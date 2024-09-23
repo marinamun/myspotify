@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { db } from "../firebaseConfig";
-
+import { db, auth } from "../firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth"; // Firebase auth to check if user is logged in
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 
 const SongDetails = () => {
   const { id } = useParams(); // Get track ID from URL
   const [track, setTrack] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // Fetch the track details from the backend
@@ -33,25 +33,31 @@ const SongDetails = () => {
     fetchTrackDetails();
   }, [id]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error fetching track details: {error.message}</p>;
-  }
-
-  if (track) {
-    // Add this line to log the image URL
-    console.log("⭐🎀🎀🎀💃🏽Album image URL:", track.album.images[0]?.url);
-  }
-  const albumImage =
-    track.album.images.find((image) => image.width === 300)?.url ||
-    track.album.images[0]?.url;
+  //This checks if the user is logged in
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
   const handleFavorite = async () => {
-    console.log("hi from handlefavvv");
+    if (!user) {
+      // If no user is logged in, prompt to log in
+      alert("You need to log in to like this song!");
+      navigate("/login"); // Redirect to login page
+      return;
+    }
+    try {
+      // If user is logged in, add the song to the user's likedSongs array in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        likedSongs: arrayUnion(id), // Add the song ID to the likedSongs array
+      });
+      alert("Song added to favorites");
+    } catch (error) {
+      console.error("Error adding song to favorites:", error);
+      alert("An error occurred while adding the song to favorites.");
+    }
   };
+
   return (
     <>
       <h1>Song Details</h1>
