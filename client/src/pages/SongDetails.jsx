@@ -22,11 +22,9 @@ const SongDetails = () => {
 
         const data = await response.json();
         setTrack(data);
-        setLoading(false);
+        console.log("IMAGE URRRRLLLL", data.album.images);
       } catch (error) {
         console.error("Error fetching track details:", error);
-        setError(error);
-        setLoading(false);
       }
     };
 
