@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { db, auth } from "../firebaseConfig"; // Ensure you're importing your Firebase config
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [likedSongs, setLikedSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); 
 
   //First we make sure user is logged in (auth.currentUser), we await and get their firestore doc,
   //and set its value in our variable. we also get the liked songs data.
@@ -41,6 +43,7 @@ const Profile = () => {
         fetchUserData();
       } else {
         setUserData(null);
+        navigate("/login");
       }
     });
 
