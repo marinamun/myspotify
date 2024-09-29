@@ -31,7 +31,6 @@ const Signup = () => {
         username,
         nationality,
         profileImage,
-        favoriteSongs: [],
       });
       console.log(">>User created and data saved to Firestore:", user);
     } catch (error) {
