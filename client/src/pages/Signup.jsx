@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebaseConfig"; // Import the auth object
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [nationality, setNationality] = useState("");
   const [profileImage, setProfileImage] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -33,6 +35,7 @@ const Signup = () => {
         profileImage,
       });
       console.log(">>User created and data saved to Firestore:", user);
+      navigate("/");
     } catch (error) {
       console.log(
         " xxxx Error saving user to Firestore:",
