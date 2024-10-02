@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { auth } from "../firebaseConfig";
 
 const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   //Spotify shows ten tracks with the user's search
   const [tracks, setTracks] = useState([]);
+  //following are for the user's top artist and songs
+  const [topTracks, setTopTracks] = useState([]);
+  const [topArtists, setTopArtists] = useState([]);
 
-  // Fetch tracks from the backend that connects to spotify api
-
-  // Handler for the search button
   const handleSearch = () => {
     console.log(">zz>>>>ZZZ>>>Search Query:", searchQuery);
     fetchTracks(searchQuery); // Trigger the API call with the search query
@@ -40,6 +41,26 @@ const Homepage = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const tracksResponse = await fetch("/api/spotify/top-tracks");
+          const artistsResponse = await fetch("/api/spotify/top-artists");
+          const tracksData = await tracksResponse.json();
+          const artistsData = await artistsResponse.json();
+
+          setTopTracks(tracksData.items);
+          setTopArtists(artistsData.items);
+        } catch (error) {
+          console.error("Error fetching top tracks or artists:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <h1>Welcome to our app</h1>
@@ -67,7 +88,37 @@ const Homepage = () => {
           </li>
         ))}
       </ul>
+
+      {auth.currentUser && (
+        <>
+          {topTracks.length > 0 && (
+            <>
+              <h2>Your Top Tracks</h2>
+              <ul>
+                {topTracks.map((track) => (
+                  <li key={track.id}>
+                    {track.name} by{" "}
+                    {track.artists.map((artist) => artist.name).join(", ")}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {topArtists.length > 0 && (
+            <>
+              <h2>Your Top Artists</h2>
+              <ul>
+                {topArtists.map((artist) => (
+                  <li key={artist.id}>{artist.name}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </>
+      )}
     </>
   );
 };
+
 export default Homepage;

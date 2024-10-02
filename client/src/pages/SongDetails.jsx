@@ -22,7 +22,7 @@ const SongDetails = () => {
 
         const data = await response.json();
         setTrack(data);
-        console.log("IMAGE URRRRLLLL", data.album.images);
+        console.log("IMAGE URRRRLLLL", data.album.images[0].url);
       } catch (error) {
         console.error("Error fetching track details:", error);
       }
@@ -65,7 +65,7 @@ const SongDetails = () => {
           <p>Artist: {track.artists.map((artist) => artist.name).join(", ")}</p>
           <p>Album: {track.album.name}</p>
           <p>Release Date: {track.release_date}</p>
-          <img src={track.album.images[0]?.url} alt={track.name} width="300" />
+          <img src={track.album.images[0]?.url} />
 
           {/* Check if preview_url is available */}
           {track.preview_url ? (

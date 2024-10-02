@@ -97,11 +97,46 @@ router.get("/song/:id", ensureValidToken, async (req, res) => {
       album: trackData.album,
       release_date: trackData.album.release_date,
       preview_url: trackData.preview_url,
-      uri: trackData.uri, 
+      uri: trackData.uri,
     });
   } catch (error) {
     console.error("Error fetching track details:", error);
     res.status(500).json({ error: "Failed to fetch track details" });
+  }
+});
+
+//Route to get the info about our user's top artist and songs
+router.get("/top-artists", ensureValidToken, async (req, res) => {
+  try {
+    const response = await axios.get(
+      "https://api.spotify.com/v1/me/top/artists",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching top artists:", error);
+    res.status(500).json({ error: "Failed to fetch top artists" });
+  }
+});
+
+router.get("/top-tracks", ensureValidToken, async (req, res) => {
+  try {
+    const response = await axios.get(
+      "https://api.spotify.com/v1/me/top/tracks",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching top tracks:", error);
+    res.status(500).json({ error: "Failed to fetch top tracks" });
   }
 });
 
