@@ -13,46 +13,54 @@ const Profile = () => {
 
   //First we make sure user is logged in (auth.currentUser), we await and get their firestore doc,
   //and set its value in our variable. we also get the liked songs data.
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          const userDocRef = doc(db, "users", user.uid);
-          const docSnap = await getDoc(userDocRef);
+  const fetchUserData = async () => {
+    try {
+      const user = auth.currentUser;
+      console.log("Current User:", user);
 
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            setUserData(data);
-            const likedSongsArray = Array.isArray(data.likedSongs)
-              ? data.likedSongs
-              : [];
-            setLikedSongs(likedSongsArray);
-            if (likedSongsArray.length > 0) {
-              fetchLikedSongs(likedSongsArray);
-            }
-          } else {
-            setError("No user data found.");
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(userDocRef);
+        console.log(
+          "Document Snapshot:",
+          docSnap.exists() ? docSnap.data() : "No document found"
+        );
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserData(data);
+          const likedSongsArray = Array.isArray(data.likedSongs)
+            ? data.likedSongs
+            : [];
+          setLikedSongs(likedSongsArray);
+          if (likedSongsArray.length > 0) {
+            fetchLikedSongs(likedSongsArray);
           }
+        } else {
+          setError("No user data found.");
         }
-      } catch (err) {
-        console.error("Error fetching user data:", err);
-        setError("Failed to fetch user data.");
-      } finally {
-        setLoading(false);
+      } else {
+        setError("User is not authenticated.");
       }
-    };
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+      setError("Failed to fetch user data.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // Following code listens and if user logs out, they are taken away from the profile
+  // Following code listens and if user logs out, they are taken away from the profile
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         fetchUserData();
       } else {
-        setUserData(null);
         navigate("/login");
       }
     });
 
+    // Cleanup subscription
     return () => unsubscribe();
   }, [navigate]);
 
@@ -68,39 +76,37 @@ const Profile = () => {
           }
           const songData = await response.json();
 
-          // We return a new object for songData, we defined its uri as the id
-          return { id: songData.uri, ...songData };
+          return {
+            id: songData.uri.split(":").pop(),
+            name: songData.name,
+            artists: songData.artists,
+            album: songData.album,
+          };
         })
       );
       setLikedSongs(songs);
-      console.log("Liked songs set:", songs);
     } catch (error) {
       console.error("Error fetching liked songs:", error);
       setError("Failed to fetch liked songs.");
     }
   };
 
-  //We create a new array of likedSongs (updatedLikedSongs) that filters the song the user removed.
-  // Then we update the new array of likedsongs in firestore and update the state of the variable
   const removeSongFromFavorites = async (songId) => {
     try {
       const user = auth.currentUser;
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
 
-        /*  console.log("Current liked songs:", likedSongs);
-        console.log("Trying to remove songId:", songId); */
-
-        const updatedLikedSongs = likedSongs.filter(
-          (song) => song.id !== songId
-        );
-        console.log("Updated liked songs array:", updatedLikedSongs);
+        // Filter the likedSongs to remove the songId
+        const updatedLikedSongs = likedSongs
+          .map((song) => song.id)
+          .filter((id) => id !== songId);
 
         await updateDoc(userDocRef, {
           likedSongs: updatedLikedSongs,
         });
 
-        setLikedSongs(updatedLikedSongs);
+        fetchLikedSongs(updatedLikedSongs);
       }
     } catch (error) {
       console.error("Error removing song:", error);
@@ -132,9 +138,9 @@ const Profile = () => {
           <p>These are your favorite songs:</p>
           <ul>
             {Array.isArray(likedSongs) && likedSongs.length > 0 ? (
-              likedSongs.map((song) => {
+              likedSongs.map((song, index) => {
                 return (
-                  <li key={song.id}>
+                  <li key={song.id || index}>
                     {song.name} by{" "}
                     {Array.isArray(song.artists)
                       ? song.artists.map((artist) => artist.name).join(", ")
