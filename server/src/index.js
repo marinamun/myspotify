@@ -9,7 +9,12 @@ const cors = require("cors");
 app.use(express.json());
 
 // Use CORS middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow the React app
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  })
+);
 
 // Basic route
 app.get("/", (req, res) => {

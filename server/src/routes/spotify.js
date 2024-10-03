@@ -140,4 +140,29 @@ router.get("/top-tracks", ensureValidToken, async (req, res) => {
   }
 });
 
+//To fetch popular tracks of each genre
+router.get("/popular-tracks", ensureValidToken, async (req, res) => {
+  const { genre } = req.query;
+  if (!genre) {
+    return res.status(400).json({ error: "The genre query is missing!!!!" });
+  }
+
+  try {
+    const response = await axios.get("https://api.spotify.com/v1/search", {
+      params: {
+        q: `genre:${genre}`,
+        type: "track",
+        limit: 10,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    res.json({ tracks: response.data.tracks.items });
+  } catch (error) {
+    console.error("There was an error fetching the popular tracks😭", error);
+    res.status(500).json({ error: "Failed to fetch the popular tracks" });
+  }
+});
+
 module.exports = router;
