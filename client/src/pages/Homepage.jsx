@@ -9,11 +9,14 @@ const Homepage = () => {
   //following are for the user's top artist and songs
   const [topTracks, setTopTracks] = useState([]);
   const [topArtists, setTopArtists] = useState([]);
+  const [popularTracks, setPopularTracks] = useState([]);
 
-  const handleSearch = () => {
-    console.log(">zz>>>>ZZZ>>>Search Query:", searchQuery);
-    fetchTracks(searchQuery); // Trigger the API call with the search query
-  };
+ 
+
+  // Fetch tracks live as the search query changes
+  useEffect(() => {
+    fetchTracks(searchQuery);
+  }, [searchQuery]);
 
   const fetchTracks = async (query) => {
     if (!query) return; // Don't fetch if query is empty
@@ -61,6 +64,28 @@ const Homepage = () => {
 
     fetchData();
   }, []);
+
+  const fetchPopularTracksByGenre = async (genre) => {
+    try {
+      console.log("Fetching popular tracks for genre: ", genre);
+      const url = `http://localhost:5000/api/spotify/popular-tracks?genre=${encodeURIComponent(
+        genre
+      )}`;
+      console.log("Fetching URL: ", url);
+      const response = await fetch(url);
+      const data = await response.json();
+
+      console.log("Fetched data: ", data);
+      setPopularTracks(data.tracks);
+    } catch (error) {
+      console.error("Error fetching popular tracks: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Updated popular tracks: ", popularTracks);
+  }, [popularTracks]);
+
   return (
     <>
       <h1>Welcome to our app</h1>
@@ -72,10 +97,8 @@ const Homepage = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </label>
-      <button onClick={handleSearch}>Search</button>
-
+    
       <h2>Results of your search:</h2>
-
       <ul>
         {tracks.map((track) => (
           <li key={track.id}>
@@ -88,7 +111,35 @@ const Homepage = () => {
           </li>
         ))}
       </ul>
+      {/* THE TOGGLE THAT DISPLAYS CURRENT POPULAR SONGS IN DIFF GENRES
+       */}
+      <div>
+        <h2>Have a look at what's trending in...</h2>
+        <div>
+          <button onClick={() => fetchPopularTracksByGenre("pop")}>Pop</button>
+          <button onClick={() => fetchPopularTracksByGenre("reggaeton")}>
+            Reggaeton
+          </button>
+          <button onClick={() => fetchPopularTracksByGenre("country")}>
+            Country
+          </button>
+        </div>
 
+        {popularTracks && (
+          <ul>
+            {popularTracks.map((track) => (
+              <li key={track.id}>
+                <Link to={`/song/${track.id}`}>
+                  {track.name} by{" "}
+                  {track.artists.map((artist) => artist.name).join(", ")}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      {/*       TO DISPLAY THE USER'S MOST LISTENED ARTIST
+       */}{" "}
       {auth.currentUser && (
         <>
           {topTracks.length > 0 && (
