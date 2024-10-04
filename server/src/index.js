@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const spotifyRoutes = require("./routes/spotify");
 const cors = require("cors");
+const youtubeRoutes = require("./routes/youtube");
 
 // Middleware
 app.use(express.json());
@@ -28,3 +29,6 @@ app.listen(port, () => {
 
 // Spotify routes
 app.use("/api/spotify", spotifyRoutes);
+
+//Youtube route
+app.use("/api/youtube", youtubeRoutes);

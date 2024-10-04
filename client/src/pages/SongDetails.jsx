@@ -8,6 +8,7 @@ const SongDetails = () => {
   const { id } = useParams(); // Get track ID from URL
   const [track, setTrack] = useState(null);
   const [user, setUser] = useState(null);
+  const [youtubeVideo, setYoutubeVideo] = useState(null);
 
   useEffect(() => {
     // Fetch the track details from the backend
@@ -56,6 +57,51 @@ const SongDetails = () => {
     }
   };
 
+  //Let's fetch the youtube video so the user can listen to the song through that at least
+  const fetchYoutubeVideo = async (songTitle) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/youtube/youtube-video?songTitle=${encodeURIComponent(
+          songTitle
+        )}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("YouTube video data:", data); // Log the response data
+      setYoutubeVideo(data);
+    } catch (error) {
+      console.error("Failed to fetch YouTube video:", error);
+    }
+  };
+
+  // Fetch YouTube video once the track is available
+  useEffect(() => {
+    if (track?.name) {
+      fetchYoutubeVideo(track.name);
+    }
+  }, [track]);
+
+  //I need this for youtube api to be happy
+  useEffect(() => {
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const player = new window.Spotify.Player({
+        name: "Web Playback SDK Player",
+        getOAuthToken: (cb) => {
+          cb("access_token");
+        },
+        volume: 0.5,
+      });
+
+      player.connect();
+    };
+
+    const script = document.createElement("script");
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
   return (
     <>
       <h1>Song Details</h1>
@@ -67,10 +113,9 @@ const SongDetails = () => {
           <p>Release Date: {track.release_date}</p>
           <img src={track.album.images[0]?.url} />
 
-          {/* Check if preview_url is available */}
           {track.preview_url ? (
             <div>
-              <p>Listen to a preview:</p>
+              <p>Listen to a Spotify preview:</p>
               <audio controls>
                 <source src={track.preview_url} type="audio/mpeg" />
                 Your browser does not support the audio element.
@@ -79,6 +124,22 @@ const SongDetails = () => {
           ) : (
             <p>No preview available for this track.</p>
           )}
+          {youtubeVideo && youtubeVideo.videoId ? (
+            <div>
+              <iframe
+                width="560"
+                height="315"
+                src={`https://www.youtube.com/embed/${youtubeVideo.videoId}`}
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="YouTube video player"
+              />
+            </div>
+          ) : (
+            <p>No video found or loading...</p>
+          )}
+
           <button onClick={handleFavorite}>❤️ Add to Favorites</button>
         </div>
       )}
