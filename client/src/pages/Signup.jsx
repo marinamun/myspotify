@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebaseConfig"; // Import the auth object
+import { auth, db, storage } from "../firebaseConfig"; // Import the auth object
 import { doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -10,7 +11,7 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [nationality, setNationality] = useState("");
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
@@ -27,12 +28,20 @@ const Signup = () => {
 
       console.log("User created, info: ", userCreation);
 
+      // Upload the image if it exists
+      let profileImageUrl = "";
+      if (profileImage) {
+        const imageRef = ref(storage, `profileImages/${user.uid}`);
+        await uploadBytes(imageRef, profileImage);
+        profileImageUrl = await getDownloadURL(imageRef);
+      }
+
       //DATABASE. adding all the user's data to firestore.
-      await setDoc(doc(db, "users", userCreation.user.uid), {
+      await setDoc(doc(db, "users", user.uid), {
         name,
         username,
         nationality,
-        profileImage,
+        profileImage: profileImageUrl,
       });
       console.log(">>User created and data saved to Firestore:", user);
       navigate("/");
@@ -86,11 +95,11 @@ const Signup = () => {
             required
           />
           <input
-            type="text"
-            value={profileImage}
-            onChange={(e) => setProfileImage(e.target.value)}
-            placeholder="Profile Image URL (optional)"
+            type="file"
+            onChange={(e) => setProfileImage(e.target.files[0])}
+            accept="image/*"
           />
+
           <button type="submit">Sign Up</button>
         </form>
       </div>
