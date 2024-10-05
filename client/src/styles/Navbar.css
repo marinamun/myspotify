@@ -1,0 +1,24 @@
+nav {
+  display: flex;
+  justify-content: space-between; /* This aligns elements left and right */
+  align-items: center; /* Vertically centers items */
+  padding: 10px 20px;
+  background-color: #2a5301;
+  color: white;
+  position: fixed; /* Sticks the navbar to the top */
+  top: 0; /* Aligns it to the top of the page */
+  border-radius: 22px;
+  left: 0;
+  right: 0;
+  margin: 3px;
+}
+nav a {
+  color: #e5ffca;
+}
+
+nav a:hover {
+  color: #e5ffca;
+}
+nav a.active {
+  font-style: italic;
+}

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import "../styles/Navbar.css";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [activeLink, setActiveLink] = useState("");
 
   useEffect(() => {
     // Check if the user is logged in with onAuth
@@ -14,6 +16,10 @@ const Navbar = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
 
   const handleSignOut = async () => {
     try {
@@ -34,14 +40,22 @@ const Navbar = () => {
 
   return (
     <nav>
-      <p>This will be the navbar</p>
       {/* Homepage will always be visible */}
-      <Link to="/">Homepage</Link>
+      <Link to="/" onClick={() => handleLinkClick("home")}>
+        Homepage
+      </Link>
 
       {user ? (
         <>
           {/* These options show when the user IS logged in */}
-          <Link to="/profile" onClick={handleProfileClick}>
+          <Link
+            to="/profile"
+            onClick={() => {
+              handleLinkClick("profile");
+              handleProfileClick(); // Ensure proper navigation
+            }}
+            className={activeLink === "profile" ? "active" : ""}
+          >
             Profile
           </Link>
           <button onClick={handleSignOut}>Sign out</button>
@@ -49,8 +63,20 @@ const Navbar = () => {
       ) : (
         <>
           {/* These options show when the user is NOT logged in */}
-          <Link to="/signup">Sign up</Link>
-          <Link to="/login">Log in</Link>
+          <Link
+            to="/signup"
+            className={activeLink === "signup" ? "active" : ""}
+            onClick={() => handleLinkClick("signup")}
+          >
+            Sign up
+          </Link>
+          <Link
+            to="/login"
+            className={activeLink === "login" ? "active" : ""}
+            onClick={() => handleLinkClick("login")}
+          >
+            Log in
+          </Link>
         </>
       )}
     </nav>

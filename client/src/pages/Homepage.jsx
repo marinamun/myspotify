@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../firebaseConfig";
+import "../styles/Homepage.css";
 
 const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,8 +11,6 @@ const Homepage = () => {
   const [topTracks, setTopTracks] = useState([]);
   const [topArtists, setTopArtists] = useState([]);
   const [popularTracks, setPopularTracks] = useState([]);
-
- 
 
   // Fetch tracks live as the search query changes
   useEffect(() => {
@@ -88,17 +87,14 @@ const Homepage = () => {
 
   return (
     <>
-      <h1>Welcome to our app</h1>
       <label>
-        Search here your song:
         <input
           type="text"
           value={searchQuery}
+          placeholder="Search your favorite song..."
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </label>
-    
-      <h2>Results of your search:</h2>
       <ul>
         {tracks.map((track) => (
           <li key={track.id}>
