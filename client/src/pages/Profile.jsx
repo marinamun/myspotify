@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db, auth } from "../firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -141,10 +141,12 @@ const Profile = () => {
               likedSongs.map((song, index) => {
                 return (
                   <li key={song.id || index}>
-                    {song.name} by{" "}
-                    {Array.isArray(song.artists)
-                      ? song.artists.map((artist) => artist.name).join(", ")
-                      : "Unknown Artist"}
+                    <Link to={`/song/${song.id}`}>
+                      {song.name} by{" "}
+                      {Array.isArray(song.artists)
+                        ? song.artists.map((artist) => artist.name).join(", ")
+                        : "Unknown Artist"}
+                    </Link>
                     <button onClick={() => removeSongFromFavorites(song.id)}>
                       Remove
                     </button>
