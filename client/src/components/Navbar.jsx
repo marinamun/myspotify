@@ -33,25 +33,27 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <nav>
       <p>This will be the navbar</p>
-      {/* This will always be visible */} <Link to="/">Homepage</Link>
-      <Link to="/profile" onClick={handleProfileClick}>
-        Profile
-      </Link>{" "}
-      {!user ? (
+      {/* Homepage will always be visible */}
+      <Link to="/">Homepage</Link>
+
+      {user ? (
         <>
-          {/*   These show when user is NOT logged in */}
-          <Link to="/signup">Sign up</Link>
-          <Link to="/login">Log in</Link>
+          {/* These options show when the user IS logged in */}
+          <Link to="/profile" onClick={handleProfileClick}>
+            Profile
+          </Link>
+          <button onClick={handleSignOut}>Sign out</button>
         </>
       ) : (
         <>
-          {/*   These show when user IS logged in */}
-          <button onClick={handleSignOut}>Sign out</button>
+          {/* These options show when the user is NOT logged in */}
+          <Link to="/signup">Sign up</Link>
+          <Link to="/login">Log in</Link>
         </>
       )}
-    </>
+    </nav>
   );
 };
 
