@@ -41,7 +41,11 @@ const Navbar = () => {
   return (
     <nav>
       {/* Homepage will always be visible */}
-      <Link to="/" onClick={() => handleLinkClick("home")}>
+      <Link
+        to="/"
+        onClick={() => handleLinkClick("home")}
+        className={activeLink === "home" ? "active" : ""}
+      >
         Homepage
       </Link>
 

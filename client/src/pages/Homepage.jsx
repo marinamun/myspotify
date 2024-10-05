@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import "../styles/Homepage.css";
@@ -11,6 +11,9 @@ const Homepage = () => {
   const [topTracks, setTopTracks] = useState([]);
   const [topArtists, setTopArtists] = useState([]);
   const [popularTracks, setPopularTracks] = useState([]);
+  //to clean search results when user clicks somewhere else on the screen
+  const searchContainerRef = useRef(null);
+  const [showResults, setShowResults] = useState(false);
 
   // Fetch tracks live as the search query changes
   useEffect(() => {
@@ -38,6 +41,7 @@ const Homepage = () => {
       const data = await response.json();
       console.log("⭐⭐⭐Data>>>>", data);
       setTracks(data.tracks.items);
+      setShowResults(true);
     } catch (error) {
       console.error("Error fetching tracks:", error);
     }
@@ -85,28 +89,52 @@ const Homepage = () => {
     console.log("Updated popular tracks: ", popularTracks);
   }, [popularTracks]);
 
+  // Handle click outside to hide results
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        setShowResults(false); // Hide results if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside); // Listen for clicks
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup
+    };
+  }, []);
+
   return (
-    <>
-      <label>
-        <input
-          type="text"
-          value={searchQuery}
-          placeholder="Search your favorite song..."
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </label>
-      <ul>
-        {tracks.map((track) => (
-          <li key={track.id}>
-            <Link to={`/song/${track.id}`}>
-              <p>
-                <strong>{track.name}</strong> by{" "}
-                <i>{track.artists.map((artist) => artist.name).join(", ")}</i>
-              </p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div className="homepage">
+      <div className="search-container" ref={searchContainerRef}>
+        <label>
+          <input
+            type="text"
+            value={searchQuery}
+            placeholder="Search your favorite song..."
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowResults(true)}
+          />
+        </label>
+        {showResults && tracks.length > 0 && (
+          <ul>
+            {tracks.map((track) => (
+              <li key={track.id}>
+                <Link to={`/song/${track.id}`}>
+                  <p>
+                    <strong>{track.name}</strong> by{" "}
+                    <i>
+                      {track.artists.map((artist) => artist.name).join(", ")}
+                    </i>
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       {/* THE TOGGLE THAT DISPLAYS CURRENT POPULAR SONGS IN DIFF GENRES
        */}
       <div>
@@ -164,7 +192,7 @@ const Homepage = () => {
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

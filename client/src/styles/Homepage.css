@@ -1,3 +1,38 @@
-body{
-    background-color: red;
+.homepage {
+  border: 1px solid black;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.search-container input {
+  width: 100%;
+  max-width: 500px; /* TO CENTER THE INPUT IN RELATION TO THE HOMEPAGE DIV */
+  padding: 20px 150px;
+  box-sizing: border-box; /* TO CENTER THE INPUT IN RELATION TO THE HOMEPAGE DIV */
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-container {
+  position: relative; /* Allow absolute positioning of the results */
+  width: 100%; /* Full width for centering */
+  max-width: 500px; /* Maximum width for the input */
+}
+
+.search-container ul {
+  position: absolute; /* Position results below the input */
+  /* top: 100%; */
+  /*  left: 0; */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  /*  z-index: 1000; */
+  display: block;
 }
