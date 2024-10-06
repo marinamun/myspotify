@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import "../styles/Homepage.css";
+import taylor from "../media/taylor2.jpg";
 
 const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,6 +15,7 @@ const Homepage = () => {
   //to clean search results when user clicks somewhere else on the screen
   const searchContainerRef = useRef(null);
   const [showResults, setShowResults] = useState(false);
+  const [activeGenre, setActiveGenre] = useState("");
 
   // Fetch tracks live as the search query changes
   useEffect(() => {
@@ -92,9 +94,11 @@ const Homepage = () => {
   // When user clicks somewhere else on the screen, the results disappear
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Check if the click was outside the search container and also not on a link inside the search results
       if (
         searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target)
+        !searchContainerRef.current.contains(event.target) &&
+        !event.target.closest("a") // Check if the clicked element is not a link
       ) {
         setShowResults(false); // Hide results if clicked outside
         setPopularTracks([]);
@@ -139,16 +143,48 @@ const Homepage = () => {
        */}
       <div className="trending-container">
         <div>
-          <h2>Check the popular songs in...</h2>
+          <h1>Check the popular songs in...</h1>
           <div className="genre-btns">
-            <button onClick={() => fetchPopularTracksByGenre("pop")}>
-              Pop
+            <button
+              style={{
+                backgroundColor: activeGenre === "pop" ? "#E5FFCA" : "#2a5300",
+                color: activeGenre === "pop" ? "#2A5300" : "#e5ffca",
+                transition: "background-color 0.3s, color 0.3s",
+              }}
+              onClick={() => {
+                setActiveGenre("pop");
+                fetchPopularTracksByGenre("pop");
+              }}
+            >
+              Pop🌆
             </button>
-            <button onClick={() => fetchPopularTracksByGenre("reggaeton")}>
-              Reggaeton
+            <button
+              style={{
+                backgroundColor:
+                  activeGenre === "reggaeton" ? "#E5FFCA" : "#2a5300",
+                color: activeGenre === "reggaeton" ? "#2A5300" : "#e5ffca",
+                transition: "background-color 0.3s, color 0.3s",
+              }}
+              onClick={() => {
+                setActiveGenre("reggaeton");
+                fetchPopularTracksByGenre("reggaeton");
+              }}
+            >
+              Reggaeton🏖️
             </button>
-            <button onClick={() => fetchPopularTracksByGenre("country")}>
-              Country
+            <button
+              style={{
+                backgroundColor:
+                  activeGenre === "country" ? "#E5FFCA" : "#2a5300",
+                color: activeGenre === "country" ? "#2A5300" : "#e5ffca",
+                transition: "background-color 0.3s, color 0.3s",
+              }}
+              onClick={() => {
+                setActiveGenre("country");
+                fetchPopularTracksByGenre("country");
+              }}
+            >
+              Country🤠
             </button>
           </div>
 
@@ -156,14 +192,46 @@ const Homepage = () => {
             <ul className="genre-results">
               {popularTracks.map((track) => (
                 <li key={track.id}>
+                  {console.log("hwwww", track.id)}
                   <Link to={`/song/${track.id}`}>
-                    ♪ {track.name} by{" "}
+                    <strong>♪ {track.name}</strong> by{" "}
                     {track.artists.map((artist) => artist.name).join(", ")}
                   </Link>
                 </li>
               ))}
             </ul>
           )}
+        </div>
+      </div>
+      {/*       TO DISPLAY THE INFO OF OUR APP
+       */}
+      <h1 style={{ fontSize: "50px", marginBottom: "9px", color: "#2a5300" }}>
+        with SpotiTube
+      </h1>{" "}
+      <div className="app-card">
+        <img src={taylor} />
+        <div className="app-info">
+          <div>
+            <p>
+              <strong>✓ View Detailed Song Information</strong>
+            </p>
+            <p>Access comprehensive details about any song.</p>
+          </div>
+          <div>
+            <p>
+              <strong>✓ Curate Your Favorites</strong>
+            </p>
+            <p>Easily add your favorite songs to your profile.</p>
+          </div>
+          <div>
+            <p>
+              <strong>✓ Enjoy Music and Videos</strong>
+            </p>
+            <p>
+              Listen to tracks and watch music videos, even <br />
+              without a Spotify Premium account.
+            </p>
+          </div>
         </div>
       </div>
       {/*       TO DISPLAY THE USER'S MOST LISTENED ARTIST

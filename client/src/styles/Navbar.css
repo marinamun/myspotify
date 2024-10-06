@@ -11,9 +11,13 @@ nav {
   left: 0;
   right: 0;
   margin: 3px;
+  z-index: 1000; /* So navbar always goes on top of other content */
 }
 nav a {
   color: #e5ffca;
+  text-decoration: none;
+  font-family: "League Spartan", sans-serif;
+  font-size: 17px;
 }
 
 nav a:hover {
@@ -21,4 +25,11 @@ nav a:hover {
 }
 nav a.active {
   font-style: italic;
+}
+.signout-btn {
+  background-color: #2a5301;
+  color: #e5ffca;
+  font-family: "League Spartan", sans-serif;
+  border: none;
+  font-size: 17px;
 }

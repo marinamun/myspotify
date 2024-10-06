@@ -1,5 +1,7 @@
 .homepage {
-  border: 1px solid #000000;
+  margin-top: 100px;
+  /*   border: 1px solid #000000;
+ */
   text-align: center;
   align-items: center;
   display: flex;
@@ -12,16 +14,19 @@
   padding: 20px 40px;
   box-sizing: border-box;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid #2a5301;
   border-radius: 25px;
   outline: none;
-  font-size: 18px; /* WHAT THE USER TYPES */
-  color: #ccc; /* WHAT THE USER TYPES */
+  /* WHAT THE USER TYPES */
+  font-size: 22px;
+  color: #2a5301;
+  margin-bottom: 50px;
 }
 
 .search-container input::placeholder {
-  font-size: 18px;
-  color: #ccc;
+  font-size: 22px;
+  color: #2a5301;
+  align-items: center;
 }
 
 .search-container {
@@ -48,12 +53,14 @@
 }
 
 .trending-container {
+  width: 40vw;
   border: 2px solid #2a5300;
-  padding: 15px;
-  margin-top: 30px;
+  padding: 25px;
+  margin-top: 40px;
   border-radius: 25px;
+  margin-bottom: 70px;
 }
-.trending-container h2 {
+.trending-container h1 {
   color: #2a5300;
 }
 .genre-results {
@@ -75,10 +82,47 @@
   display: flex;
   justify-content: space-between;
 }
+.genre-btns button {
+  font-size: 18px;
+  font-family: "Coming Soon", cursive;
+}
 .trending-container button {
   background-color: #2a5300;
   padding: 15px 25px;
   border: 1px solid #2a5300;
   border-radius: 25px;
   color: #e5ffca;
+}
+
+.app-card {
+  width: 40vw;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-family: "League Spartan", sans-serif;
+  background-color: #2a5300;
+  color: #e5ffca;
+  align-items: center;
+  border-radius: 25px;
+  padding-top: 3vw;
+  padding-bottom: 3vw;
+}
+.app-card img {
+  width: 10vw;
+  height: 17vw;
+  border-radius: 25px;
+}
+.app-info {
+  text-align: left;
+  padding: 20px;
+}
+
+.app-info p {
+  font-size: 19px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+.app-info div {
+  margin-bottom: 30px;
 }
