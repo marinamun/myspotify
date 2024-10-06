@@ -89,7 +89,7 @@ const Homepage = () => {
     console.log("Updated popular tracks: ", popularTracks);
   }, [popularTracks]);
 
-  // Handle click outside to hide results
+  // When user clicks somewhere else on the screen, the results disappear
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -97,6 +97,7 @@ const Homepage = () => {
         !searchContainerRef.current.contains(event.target)
       ) {
         setShowResults(false); // Hide results if clicked outside
+        setPopularTracks([]);
       }
     };
 
@@ -137,30 +138,34 @@ const Homepage = () => {
       </div>
       {/* THE TOGGLE THAT DISPLAYS CURRENT POPULAR SONGS IN DIFF GENRES
        */}
-      <div>
-        <h2>Have a look at what's trending in...</h2>
+      <div className="trending-container">
         <div>
-          <button onClick={() => fetchPopularTracksByGenre("pop")}>Pop</button>
-          <button onClick={() => fetchPopularTracksByGenre("reggaeton")}>
-            Reggaeton
-          </button>
-          <button onClick={() => fetchPopularTracksByGenre("country")}>
-            Country
-          </button>
-        </div>
+          <h2>Check the popular songs in...</h2>
+          <div className="genre-btns">
+            <button onClick={() => fetchPopularTracksByGenre("pop")}>
+              Pop
+            </button>
+            <button onClick={() => fetchPopularTracksByGenre("reggaeton")}>
+              Reggaeton
+            </button>
+            <button onClick={() => fetchPopularTracksByGenre("country")}>
+              Country
+            </button>
+          </div>
 
-        {popularTracks && (
-          <ul>
-            {popularTracks.map((track) => (
-              <li key={track.id}>
-                <Link to={`/song/${track.id}`}>
-                  {track.name} by{" "}
-                  {track.artists.map((artist) => artist.name).join(", ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+          {popularTracks && (
+            <ul className="genre-results">
+              {popularTracks.map((track) => (
+                <li key={track.id}>
+                  <Link to={`/song/${track.id}`}>
+                    ♪ {track.name} by{" "}
+                    {track.artists.map((artist) => artist.name).join(", ")}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
       {/*       TO DISPLAY THE USER'S MOST LISTENED ARTIST
        */}{" "}

@@ -1,38 +1,82 @@
 .homepage {
-  border: 1px solid black;
+  border: 1px solid #000000;
   text-align: center;
   align-items: center;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 20px;
+  padding: 40px;
 }
 .search-container input {
   width: 100%;
-  max-width: 500px; /* TO CENTER THE INPUT IN RELATION TO THE HOMEPAGE DIV */
-  padding: 20px 150px;
-  box-sizing: border-box; /* TO CENTER THE INPUT IN RELATION TO THE HOMEPAGE DIV */
+  padding: 20px 40px;
+  box-sizing: border-box;
   text-align: center;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 25px;
+  outline: none;
+  font-size: 18px; /* WHAT THE USER TYPES */
+  color: #ccc; /* WHAT THE USER TYPES */
+}
+
+.search-container input::placeholder {
+  font-size: 18px;
+  color: #ccc;
 }
 
 .search-container {
-  position: relative; /* Allow absolute positioning of the results */
-  width: 100%; /* Full width for centering */
-  max-width: 500px; /* Maximum width for the input */
+  position: relative;
+  width: 100%;
+  max-width: 500px;
 }
 
 .search-container ul {
-  position: absolute; /* Position results below the input */
-  /* top: 100%; */
-  /*  left: 0; */
+  position: absolute;
   width: 100%;
   margin: 0;
   padding: 0;
   list-style-type: none;
-  background-color: white;
+  background-color: #2a5301;
+
   border: 1px solid #ccc;
-  /*  z-index: 1000; */
   display: block;
+}
+.search-container a {
+  color: #e5ffca;
+  text-decoration: none;
+}
+
+.trending-container {
+  border: 2px solid #2a5300;
+  padding: 15px;
+  margin-top: 30px;
+  border-radius: 25px;
+}
+.trending-container h2 {
+  color: #2a5300;
+}
+.genre-results {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.genre-results li {
+  margin-bottom: 8px;
+}
+.genre-results li a {
+  text-decoration: none;
+  color: #2a5300;
+}
+.genre-btns {
+  display: flex;
+  justify-content: space-between;
+}
+.trending-container button {
+  background-color: #2a5300;
+  padding: 15px 25px;
+  border: 1px solid #2a5300;
+  border-radius: 25px;
+  color: #e5ffca;
 }
