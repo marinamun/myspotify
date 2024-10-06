@@ -37,13 +37,14 @@
   padding: 0;
   list-style-type: none;
   background-color: #2a5301;
-
   border: 1px solid #ccc;
+  border-radius: 25px;
   display: block;
 }
 .search-container a {
   color: #e5ffca;
   text-decoration: none;
+  font-family: "Coming Soon", cursive;
 }
 
 .trending-container {
@@ -68,6 +69,7 @@
 .genre-results li a {
   text-decoration: none;
   color: #2a5300;
+  font-family: "Coming Soon", cursive;
 }
 .genre-btns {
   display: flex;

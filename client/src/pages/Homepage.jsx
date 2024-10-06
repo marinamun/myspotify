@@ -126,11 +126,10 @@ const Homepage = () => {
                 <Link to={`/song/${track.id}`}>
                   <p>
                     <strong>{track.name}</strong> by{" "}
-                    <i>
-                      {track.artists.map((artist) => artist.name).join(", ")}
-                    </i>
+                    {track.artists.map((artist) => artist.name).join(", ")}
                   </p>
                 </Link>
+                <hr></hr>
               </li>
             ))}
           </ul>

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { db, auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth"; // Firebase auth to check if user is logged in
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import "../styles/SongDetails.css";
 
 const SongDetails = () => {
   const { id } = useParams(); // Get track ID from URL
@@ -104,28 +105,44 @@ const SongDetails = () => {
   }, []);
   return (
     <>
-      <h1>Song Details</h1>
       {track && (
         <div>
-          <h2>{track.name}</h2>
-          <p>Artist: {track.artists.map((artist) => artist.name).join(", ")}</p>
-          <p>Album: {track.album.name}</p>
-          <p>Release Date: {track.release_date}</p>
-          <img src={track.album.images[0]?.url} />
-
-          {track.preview_url ? (
-            <div>
-              <p>Listen to a Spotify preview:</p>
-              <audio controls>
-                <source src={track.preview_url} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
+          <div className="song-card">
+            {" "}
+            <img src={track.album.images[0]?.url} />
+            <div className="song-card-text">
+              <h2>{track.name}</h2>
+              <p>
+                <strong>Artist:</strong>{" "}
+                {track.artists.map((artist) => artist.name).join(", ")}
+              </p>
+              <p>
+                <strong>Album: </strong>
+                {track.album.name}
+              </p>
+              <p>
+                <strong>Release Date:</strong> {track.release_date}
+              </p>
             </div>
-          ) : (
-            <p>No preview available for this track.</p>
-          )}
+          </div>
+          <div className="songDetails-btns">
+            <button onClick={handleFavorite} className="like-btn">
+              ❤️ Add to Favorites
+            </button>
+
+            {track.preview_url ? (
+              <div>
+                <audio controls>
+                  <source src={track.preview_url} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            ) : (
+              <p>No Spotify preview available for this song :/</p>
+            )}
+          </div>
           {youtubeVideo && youtubeVideo.videoId ? (
-            <div>
+            <div className="youtube-container">
               <iframe
                 width="560"
                 height="315"
@@ -139,8 +156,6 @@ const SongDetails = () => {
           ) : (
             <p>No video found or loading...</p>
           )}
-
-          <button onClick={handleFavorite}>❤️ Add to Favorites</button>
         </div>
       )}
     </>

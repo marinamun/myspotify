@@ -1,0 +1,49 @@
+.profile-card {
+  margin-top: 5vw;
+  border: 2px solid #2a5300;
+  border-radius: 25px;
+  color: #2a5300;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.profile-card img {
+  width: 15vw;
+  height: 15vw;
+  border-radius: 25px;
+  object-fit: cover; /* margin-right: 1.5vw; */
+}
+.liked-songs {
+  margin-top: 20px;
+  background-color: #2a5300;
+  padding: 10px;
+  border-radius: 25px;
+}
+.liked-songs h2 {
+  color: #e5ffca;
+}
+.liked-songs ul {
+  list-style-type: none; /* Removes the bullet points from the list */
+}
+
+.liked-songs a {
+  color: #e5ffca; /* Sets the link color to red */
+  font-family: "Coming Soon", cursive;
+
+  text-decoration: none; /* Ensures links have no underline */
+}
+.liked-songs li {
+  text-align: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.remove-btn {
+  background-color: #2a5300;
+  border: none;
+  margin-left: 10px;
+  margin-right: 15px;
+}

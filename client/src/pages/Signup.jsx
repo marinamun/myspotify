@@ -4,6 +4,7 @@ import { auth, db, storage } from "../firebaseConfig"; // Import the auth object
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
+import "../styles/Signup.css";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -56,51 +57,60 @@ const Signup = () => {
 
   return (
     <>
-      <div>
-        <h2>Create Account🎀</h2>
+      <div className="signup">
+        <h1>Let’s create your account</h1>
         <form onSubmit={handleSignUp}>
           <input
             type="email"
             value={email}
+            className="email-input"
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             required
           />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-            required
-          />
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-            required
-          />
-          <input
-            type="text"
-            value={nationality}
-            onChange={(e) => setNationality(e.target.value)}
-            placeholder="Nationality"
-            required
-          />
-          <input
-            type="file"
-            onChange={(e) => setProfileImage(e.target.files[0])}
-            accept="image/*"
-          />
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+            />
 
-          <button type="submit">Sign Up</button>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+              required
+            />
+
+            <input
+              type="text"
+              value={nationality}
+              onChange={(e) => setNationality(e.target.value)}
+              placeholder="Nationality"
+              required
+            />
+          </div>
+          <div>
+            <input
+              type="file"
+              onChange={(e) => setProfileImage(e.target.files[0])}
+              accept="image/*"
+            />
+          </div>
+
+          <button type="submit" className="signup-btn">Sign up</button>
         </form>
       </div>
     </>

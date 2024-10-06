@@ -1,0 +1,48 @@
+.song-card {
+  margin-top: 5vw;
+  border: 2px solid #2a5300;
+  border-radius: 25px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.song-card img {
+  width: 15vw;
+  height: 15vw;
+  border-radius: 25px;
+  margin-right: 1.5vw;
+}
+.song-card-text {
+  text-align: left;
+  color: #2a5300;
+  font-family: "Coming Soon", cursive;
+}
+.songDetails-btns {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.like-btn {
+  background-color: #2a5300;
+  color: #e5ffca;
+  padding: 15px 25px;
+  border: 1px solid #2a5300;
+  border-radius: 25px;
+  margin-right: 2vw;
+}
+audio::-webkit-media-controls-enclosure {
+  background-color: #2a5300;
+}
+.youtube-container {
+  width: 100%; /* DONT CHANGE */
+  padding-bottom: 56.25%; /* DONT CHANGE */
+  height: 0; /* DONT CHANGE */
+  overflow: hidden; /* DONT CHANGE */
+  border-radius: 25px;
+}

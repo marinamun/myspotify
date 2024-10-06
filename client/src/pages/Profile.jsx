@@ -3,6 +3,7 @@ import { db, auth } from "../firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/Profile.css";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -126,37 +127,47 @@ const Profile = () => {
     <div>
       {userData ? (
         <>
-          <h1>Hi there, {userData.username}</h1>
-          <p>Your nationality: {userData.nationality}</p>
-          {userData.profileImage && (
-            <img
-              src={userData.profileImage}
-              style={{ width: "200px" }}
-              alt="Profile"
-            />
-          )}
-          <p>These are your favorite songs:</p>
-          <ul>
-            {Array.isArray(likedSongs) && likedSongs.length > 0 ? (
-              likedSongs.map((song, index) => {
-                return (
-                  <li key={song.id || index}>
-                    <Link to={`/song/${song.id}`}>
-                      {song.name} by{" "}
-                      {Array.isArray(song.artists)
-                        ? song.artists.map((artist) => artist.name).join(", ")
-                        : "Unknown Artist"}
-                    </Link>
-                    <button onClick={() => removeSongFromFavorites(song.id)}>
-                      Remove
-                    </button>
-                  </li>
-                );
-              })
-            ) : (
-              <li>No favorite songs added.</li>
+          <div className="profile-card">
+            <h1>Hi there, {userData.username}</h1>
+            {userData.profileImage && (
+              <img
+                src={userData.profileImage}
+                style={{ width: "200px" }}
+                alt="Profile"
+              />
             )}
-          </ul>
+          </div>
+          <div className="liked-songs">
+            <h2>These are your favorite songs:</h2>
+            <ul>
+              {Array.isArray(likedSongs) && likedSongs.length > 0 ? (
+                likedSongs.map((song, index) => {
+                  return (
+                    <li key={song.id || index}>
+                      <div className="each-liked-song">
+                        <Link to={`/song/${song.id}`}>
+                          ♪ <strong>{song.name} </strong>by{" "}
+                          {Array.isArray(song.artists)
+                            ? song.artists
+                                .map((artist) => artist.name)
+                                .join(", ")
+                            : "Unknown Artist"}
+                        </Link>
+                        <button
+                          onClick={() => removeSongFromFavorites(song.id)}
+                          className="remove-btn"
+                        >
+                          ❌
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })
+              ) : (
+                <li>No favorite songs added.</li>
+              )}
+            </ul>
+          </div>
         </>
       ) : (
         <div>No user data available.</div>

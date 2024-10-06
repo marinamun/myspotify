@@ -1,0 +1,54 @@
+.signup {
+  background-color: #2a5300;
+  padding: 20px 30px;
+  border-radius: 25px;
+}
+.signup h1 {
+  color: #e5ffca;
+}
+.signup input {
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  background-color: #e5ffca;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 13px; /* WHAT THE USER TYPES */
+  color: #2a5300; /* WHAT THE USER TYPES */
+
+  font-family: "Coming Soon", cursive;
+  margin-bottom: 20px;
+  outline: none;
+}
+.signup input::placeholder {
+  color: #2a5300;
+  font-family: "Coming Soon", cursive;
+  font-weight: bolder;
+}
+.email-input {
+  width: 19.5vw;
+}
+input[type="file"] {
+  width: 19.5vw;
+}
+input[type="file"]::file-selector-button {
+  background-color: white;
+  border: none;
+  padding: 5px;
+  border-radius: 15px;
+  font-family: "Coming Soon", cursive;
+}
+.signup-btn {
+  padding: 15px;
+  border-radius: 25px;
+  background-color: #2a5300;
+  border: 1px solid #e5ffca;
+  color: #e5ffca;
+  font-family: "League Spartan", sans-serif;
+  font-size: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.signup-btn:hover {
+  background-color: #e5ffca;
+  color: #2a5300;
+}
