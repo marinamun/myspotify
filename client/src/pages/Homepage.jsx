@@ -5,6 +5,8 @@ import "../styles/Homepage.css";
 import taylor from "../media/taylor2.jpg";
 
 const Homepage = () => {
+  console.log("🏠🕊️✨API URL:", process.env.REACT_APP_API_URL);
+
   const [searchQuery, setSearchQuery] = useState("");
   //Spotify shows ten tracks with the user's search
   const [tracks, setTracks] = useState([]);
