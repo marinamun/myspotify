@@ -26,9 +26,9 @@ const Homepage = () => {
     if (!query) return; // Don't fetch if query is empty
 
     try {
-      const url = `http://localhost:5000/api/spotify/search?query=${encodeURIComponent(
-        query
-      )}`;
+      const url = `${
+        process.env.REACT_APP_API_URL
+      }/api/spotify/search?query=${encodeURIComponent(query)}`;
       console.log("Fetching URL:", url);
 
       //Fetch the response from the backend < api, which comes in json
@@ -73,9 +73,9 @@ const Homepage = () => {
   const fetchPopularTracksByGenre = async (genre) => {
     try {
       console.log("Fetching popular tracks for genre: ", genre);
-      const url = `http://localhost:5000/api/spotify/popular-tracks?genre=${encodeURIComponent(
-        genre
-      )}`;
+      const url = `${
+        process.env.REACT_APP_API_URL
+      }/api/spotify/popular-tracks?genre=${encodeURIComponent(genre)}`;
       console.log("Fetching URL: ", url);
       const response = await fetch(url);
       const data = await response.json();

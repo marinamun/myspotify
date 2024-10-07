@@ -16,7 +16,7 @@ const SongDetails = () => {
     const fetchTrackDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/spotify/song/${id}`
+          `${process.env.REACT_APP_API_URL}/api/spotify/song/${id}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -62,9 +62,9 @@ const SongDetails = () => {
   const fetchYoutubeVideo = async (songTitle) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/youtube/youtube-video?songTitle=${encodeURIComponent(
-          songTitle
-        )}`
+        `${
+          process.env.REACT_APP_API_URL
+        }/api/youtube/youtube-video?songTitle=${encodeURIComponent(songTitle)}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

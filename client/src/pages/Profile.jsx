@@ -70,7 +70,7 @@ const Profile = () => {
       const songs = await Promise.all(
         likedSongIds.map(async (songId) => {
           const response = await fetch(
-            `http://localhost:5000/api/spotify/song/${songId}`
+            `${process.env.REACT_APP_API_URL}/api/spotify/song/${songId}`
           );
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
