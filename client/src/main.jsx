@@ -12,9 +12,9 @@ createRoot(document.getElementById("root")).render(
       href="https://www.linkedin.com/in/marinamun/"
       target="_blank"
       style={{
-        color: "#9cad8a", 
-        fontFamily: "'Coming Soon', cursive", 
-        textDecoration: "none"
+        color: "#9cad8a",
+        fontFamily: "'Coming Soon', cursive",
+        textDecoration: "none",
       }}
     >
       Made by Marina M.✨
