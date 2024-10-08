@@ -47,17 +47,20 @@ audio::-webkit-media-controls-enclosure {
   border-radius: 25px;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 500px) {
   .song-card {
     display: flex;
     flex-direction: column;
     margin-bottom: 40px;
+    padding: 5px;
   }
   .song-card-text {
     text-align: center;
   }
   .songDetails-btns {
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
   }
   .like-btn {
     font-size: 18px;
