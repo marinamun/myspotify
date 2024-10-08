@@ -138,7 +138,9 @@ const SongDetails = () => {
                 </audio>
               </div>
             ) : (
-              <p>No Spotify preview available for this song :/</p>
+              <p style={{ color: "#2a5300" }}>
+                No Spotify preview available for this song :/
+              </p>
             )}
           </div>
           {youtubeVideo && youtubeVideo.videoId ? (
