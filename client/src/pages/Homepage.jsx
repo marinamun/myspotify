@@ -5,7 +5,7 @@ import "../styles/Homepage.css";
 import taylor from "../media/taylor2.jpg";
 
 const Homepage = () => {
-  console.log("🏠🕊️✨API URL:", process.env.REACT_APP_API_URL);
+  console.log("🏠🕊️✨API URL:", import.meta.env.VITE_API_URL);
 
   const [searchQuery, setSearchQuery] = useState("");
   //Spotify shows ten tracks with the user's search
@@ -29,7 +29,7 @@ const Homepage = () => {
 
     try {
       const url = `${
-        process.env.REACT_APP_API_URL
+        import.meta.env.VITE_API_URL
       }/api/spotify/search?query=${encodeURIComponent(query)}`;
       console.log("Fetching URL:", url);
 
@@ -76,7 +76,7 @@ const Homepage = () => {
     try {
       console.log("Fetching popular tracks for genre: ", genre);
       const url = `${
-        process.env.REACT_APP_API_URL
+        import.meta.env.VITE_API_URL
       }/api/spotify/popular-tracks?genre=${encodeURIComponent(genre)}`;
       console.log("Fetching URL: ", url);
       const response = await fetch(url);
