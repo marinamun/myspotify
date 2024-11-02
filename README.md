@@ -1,3 +1,5 @@
+https://spotitube.netlify.app/
+
 # SpotiTube
 
 SpotiTube is a web app where users can search for songs, view detailed song information, and curate their favorite tracks. Additionally, users can explore popular songs by genre and watch YouTube videos of tracks, even without needing a Spotify Premium account. Firebase authentication is integrated to allow users to save their favorite songs.
