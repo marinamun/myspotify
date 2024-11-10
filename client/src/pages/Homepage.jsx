@@ -1,8 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import "../styles/Homepage.css";
 import taylor from "../media/taylor2.jpg";
+
+// debounce to delay the api call until the user stopped typing for a bit
+function debounce(func, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+}
 
 const Homepage = () => {
   console.log("🏠🕊️✨API URL:", import.meta.env.VITE_API_URL);
@@ -19,13 +28,10 @@ const Homepage = () => {
   const [showResults, setShowResults] = useState(false);
   const [activeGenre, setActiveGenre] = useState("");
 
-  // Fetch tracks live as the search query changes
-  useEffect(() => {
-    fetchTracks(searchQuery);
-  }, [searchQuery]);
+  
 
   const fetchTracks = async (query) => {
-    if (!query) return; // Don't fetch if query is empty
+    if (!query) return; 
 
     try {
       const url = `${
@@ -50,6 +56,14 @@ const Homepage = () => {
       console.error("Error fetching tracks:", error);
     }
   };
+
+    // Create a debounced version of fetchTracks
+  const debouncedFetchTracks = useCallback(debounce(fetchTracks, 300), []);
+
+  // Trigger debounced fetch when searchQuery changes
+  useEffect(() => {
+    debouncedFetchTracks(searchQuery);
+  }, [searchQuery, debouncedFetchTracks]);
 
   useEffect(() => {
     const fetchData = async () => {
