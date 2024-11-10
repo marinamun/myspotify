@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams ,useNavigate } from "react-router-dom";
 import { db, auth } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth"; // Firebase auth to check if user is logged in
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
@@ -11,6 +11,8 @@ const SongDetails = () => {
   const [user, setUser] = useState(null);
   const [youtubeVideo, setYoutubeVideo] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     // Fetch the track details from the backend
@@ -43,7 +45,6 @@ const SongDetails = () => {
   const handleFavorite = async () => {
     if (!user) {
       // If no user is logged in, prompt to log in
-      alert("You need to log in to like this song!");
       navigate("/login"); // Redirect to login page
       return;
     }
